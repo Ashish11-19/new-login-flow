@@ -17,7 +17,7 @@ const Login = () => {
     const payload = { email, password };
 
     axios
-      .post(`${baseURL}/login`, payload)
+      .post(`${baseURL}/api/login`, payload)
       .then((res) => {
         console.log(res.data);
         setAuthentication(res.data.token);

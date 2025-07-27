@@ -33,7 +33,7 @@ export const isLogin = async () => {
 
   if (token) {
     try {
-      const res = await axios.post(`${baseURL}/auth`, { token });
+      const res = await axios.post(`${baseURL}/api/auth`, { token });
       return res.data;
     } catch (err) {
       console.error("Auth check failed:", err);
