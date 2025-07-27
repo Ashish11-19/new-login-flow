@@ -18,7 +18,7 @@ const SignUp = () => {
 
     axios
       .post(`${baseURL}/signup`, payload)
-      .then((res) => {
+      .then(() => { // ✅ removed unused 'res'
         toast.success(
           <div>
             Account Created Successfully <br />
