@@ -1,25 +1,34 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { baseURL } from "../utils/constant";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { setAuthentication } from "../utils/auth";
+import { isLogin, setAuthentication } from "@/utils/auth";
+import { FaUser } from "react-icons/fa";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
 
+  useEffect(() => {
+    const authenticate = async () => {
+      if (await isLogin()) {
+        router.push("/");
+      }
+    };
+    authenticate();
+  }, [router]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const payload = { email, password };
 
     axios
-      .post(`${baseURL}/api/login`, payload)
+      .post(`${baseURL}/login`, payload)
       .then((res) => {
-        console.log(res.data);
         setAuthentication(res.data.token);
         toast.success("Login Successfully");
         router.push("/");
@@ -28,60 +37,46 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
-      {/* Left Side - Login Form */}
-      <div className="md:w-1/2 flex items-center justify-center bg-[#111827] p-6 text-[#F9FAFB]">
-        <div className="w-full max-w-sm bg-[#1F2937] p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-semibold text-center mb-6 text-[#F9FAFB]">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-700 to-blue-900 dark:from-gray-900 dark:to-black px-4 transition-colors duration-300">
+      <div className="w-full max-w-md bg-white/10 dark:bg-white/5 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 p-8">
+        <h2 className="text-3xl font-bold text-center text-white mb-8 flex items-center justify-center gap-3">
+          <FaUser className="text-blue-400 dark:text-blue-300 text-2xl" /> Login
+        </h2>
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-4 py-3 bg-white/70 dark:bg-gray-800/80 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder-gray-500 dark:placeholder-gray-400"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-4 py-3 bg-white/70 dark:bg-gray-800/80 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder-gray-500 dark:placeholder-gray-400"
+            required
+          />
+          <button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white py-3 rounded-lg font-semibold transition duration-300 shadow-lg hover:shadow-xl"
+          >
             Login
-          </h2>
+          </button>
+        </form>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-[#374151] bg-transparent text-[#F9FAFB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#14b8a6]"
-              required
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-[#374151] bg-transparent text-[#F9FAFB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#14b8a6]"
-              required
-            />
-            <button
-              type="submit"
-              className="w-full bg-[#14b8a6] text-black py-2 rounded-md hover:bg-[#0d9488] transition"
-            >
-              Login
-            </button>
-          </form>
-
-          <p className="mt-4 text-center text-sm text-[#9CA3AF]">
-            Don&apos;t have an account?{" "}
-            <Link href="/signup" className="text-[#14b8a6] hover:underline">
-              Sign up
-            </Link>
-          </p>
-        </div>
-      </div>
-
-      {/* Right Side - Welcome Section */}
-      <div className="md:w-1/2 flex flex-col justify-center items-center bg-gradient-to-br from-[#0f172a] to-[#1e293b] p-10 text-white text-center space-y-6">
-        <h1 className="text-4xl font-bold">New Here?</h1>
-        <p className="text-lg text-slate-300">
-          Create an account and start your journey.
+        <p className="mt-6 text-center text-sm text-white/80">
+          Don&apos;t have an account?{" "}
+          <Link
+            href="/signup"
+            className="text-blue-300 hover:underline hover:text-blue-100"
+          >
+            Sign up
+          </Link>
         </p>
-        <Link
-          href="/signup"
-          className="mt-4 px-6 py-2 bg-teal-500 hover:bg-teal-600 rounded-full font-semibold text-black transition"
-        >
-          Create Account
-        </Link>
       </div>
     </div>
   );

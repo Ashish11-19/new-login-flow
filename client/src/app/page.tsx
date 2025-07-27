@@ -22,22 +22,22 @@ export default function Home() {
     authenticate();
   }, []);
 
-  const handleLogOut = () => {
+  const handleLogout = () => {
     logOut();
     toast.success("Logout Successfully");
     router.push("/login");
   };
 
   return (
-    <main className="w-full h-screen bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#111827] text-white flex items-center justify-center">
-      <div className="backdrop-blur-md bg-white/5 border border-white/10 p-8 rounded-2xl shadow-xl w-[90%] max-w-md text-center space-y-6">
+    <main className="w-full h-screen flex items-center justify-center bg-gradient-to-br from-blue-700 to-blue-900 dark:from-gray-900 dark:to-black px-4">
+      <div className="w-full max-w-md bg-white/10 dark:bg-white/5 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 p-8 text-center space-y-5">
         <h1 className="text-3xl font-bold text-white">
-          Hi <span className="text-teal-400">{user.name}</span>, Welcome!
+          Welcome, <span className="text-blue-300">{user.name}</span> 👋
         </h1>
-        <p className="text-sm text-gray-300">{user.email}</p>
+        <p className="text-white/80 text-sm">{user.email}</p>
         <button
-          onClick={handleLogOut}
-          className="bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded-full font-medium transition"
+          onClick={handleLogout}
+          className="mt-4 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 shadow-md hover:shadow-lg"
         >
           Logout
         </button>
