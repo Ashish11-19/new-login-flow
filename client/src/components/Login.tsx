@@ -27,7 +27,7 @@ const Login = () => {
     const payload = { email, password };
 
     axios
-      .post(`${baseURL}/login`, payload)
+      .post(`${baseURL}/api/login`, payload)
       .then((res) => {
         setAuthentication(res.data.token);
         toast.success("Login Successfully");
